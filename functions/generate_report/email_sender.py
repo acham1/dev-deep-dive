@@ -15,7 +15,7 @@ def send_report_email(
     report_id: str,
 ):
     resend.api_key = os.environ["RESEND_API_KEY"]
-    from_email = os.environ.get("FROM_EMAIL", "deepdive@yourdomain.com")
+    from_email = os.environ.get("FROM_EMAIL", "deepdive@mail.dev-deep-dive.alanch.am")
     site_url = os.environ.get("SITE_URL", "https://acham1.github.io/dev-deep-dive")
 
     subject = f"Weekly Deep Dive: {report.get('title', project['name'])}"
