@@ -20,7 +20,7 @@ gcloud functions deploy generate-report \
     --source=functions/generate_report \
     --entry-point=generate_report \
     --trigger-topic="$TOPIC" \
-    --timeout=900s \
+    --timeout=540s \
     --memory=1Gi \
     --set-env-vars="GCP_PROJECT=$PROJECT_ID,SITE_URL=${SITE_URL:-https://acham1.github.io/dev-deep-dive},HOSTING_BUCKET=${HOSTING_BUCKET:-$PROJECT_ID.firebasestorage.app}" \
     --set-secrets="/etc/secrets/.env=$SECRET_NAME:latest" \
