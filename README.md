@@ -50,6 +50,10 @@ bash deploy.sh
 gcloud pubsub topics publish deep-dive-trigger --message='{}'
 ```
 
+## Roadmap
+
+- [ ] **Podcast generation** — Use TTS to convert reports into audio episodes and publish to podcast directories (Apple Podcasts, Spotify, etc.)
+
 ## Configuration
 
 Environment variables in `deploy.sh`:
