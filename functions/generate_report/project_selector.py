@@ -23,6 +23,8 @@ def select_project() -> dict:
     )
 
     text = response.content[0].text.strip()
+    if text.startswith("```"):
+        text = text.split("\n", 1)[1].rsplit("```", 1)[0].strip()
     project = json.loads(text)
 
     for field in ("name", "repo_url", "category"):
