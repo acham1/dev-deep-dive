@@ -61,6 +61,7 @@ gcloud pubsub topics publish deep-dive-trigger --message='{}'
 - [ ] **Latest Deep Dives** — Rename "Latest Deep Dive" to "Latest Deep Dives" on the home page
 - [ ] **RSS feed** — Fix RSS feed (currently 404) — serve via API endpoint or generate as static file
 - [ ] **Error alerting** — Email an admin address when report generation fails
+- [ ] **Multi-domain support** — Make the platform reusable for other domains (e.g. pharmacy/FDA drug approvals, security CVEs, academic papers) by extracting topic selection and report prompts into configurable templates
 
 ## Configuration
 
