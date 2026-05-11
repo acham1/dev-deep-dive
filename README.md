@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="docs/logo.png" alt="dev-deep-dive" width="480">
+</p>
+
 # Weekly Deep Dive
 
 An automated weekly newsletter that picks a notable open-source project and produces a structured technical report at three difficulty levels (beginner, intermediate, advanced).
