@@ -1,0 +1,9 @@
+[project]
+name = "dev-deep-dive"
+version = "0.1.0"
+description = "Weekly deep dive into notable open-source projects"
+requires-python = ">=3.12"
+
+[tool.black]
+line-length = 88
+target-version = ["py312"]

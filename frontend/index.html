@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Weekly Deep Dive</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="alternate" type="application/rss+xml" title="Weekly Deep Dive" href="feed.xml">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container">
+    <h1><a href="/">Weekly Deep Dive</a></h1>
+    <nav>
+      <a href="archive.html">Archive</a>
+      <a href="feed.xml">RSS</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="container">
+    <h2>One open-source project. Three levels of difficulty. Every week.</h2>
+    <p>A weekly deep dive into the architecture, design decisions, and lessons behind notable open-source projects.</p>
+
+    <form id="signup-form" class="signup-form">
+      <input type="email" placeholder="you@example.com" required>
+      <button type="submit">Subscribe</button>
+    </form>
+    <p id="signup-message" class="signup-message"></p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <h2>Latest Deep Dive</h2>
+    <div id="latest-preview" class="card-grid">
+      <p>Loading...</p>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="container">
+    <a href="archive.html">Browse all deep dives</a> · <a href="feed.xml">RSS Feed</a>
+  </div>
+</footer>
+
+<script>
+  window.DEEP_DIVE_API_BASE = ""; // Set to Cloud Function URL after deploy
+</script>
+<script src="app.js"></script>
+
+</body>
+</html>
