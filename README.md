@@ -60,6 +60,7 @@ gcloud pubsub topics publish deep-dive-trigger --message='{}'
 - [ ] **Site header logo** — Add the logo to the site header
 - [ ] **Latest Deep Dives** — Rename "Latest Deep Dive" to "Latest Deep Dives" on the home page
 - [ ] **RSS feed** — Fix RSS feed (currently 404) — serve via API endpoint or generate as static file
+- [ ] **Error alerting** — Email an admin address when report generation fails
 
 ## Configuration
 
