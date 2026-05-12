@@ -57,11 +57,11 @@ gcloud pubsub topics publish deep-dive-trigger --message='{}'
 ## Roadmap
 
 - [ ] **Podcast generation** — Use TTS to convert reports into audio episodes and publish to podcast directories (Apple Podcasts, Spotify, etc.)
-- [ ] **Site header logo** — Add the logo to the site header
-- [ ] **Latest Deep Dives** — Show multiple recent reports on the home page instead of just the single latest one
-- [ ] **RSS feed** — Fix RSS feed (currently 404) — serve via API endpoint or generate as static file
-- [ ] **Error alerting** — Email an admin address when report generation fails
-- [ ] **Welcome email** — Send new subscribers a welcome email with the most recent report
+- [x] **Site header logo** — Add the logo to the site header
+- [x] **Latest Deep Dives** — Show multiple recent reports on the home page instead of just the single latest one
+- [x] **RSS feed** — Serve RSS feed via API endpoint (`/feed.xml`)
+- [x] **Error alerting** — Email `ADMIN_EMAIL` when report generation fails
+- [x] **Welcome email** — Send new subscribers a welcome email with the most recent report
 - [ ] **Multi-domain support** — Make the platform reusable for other domains (e.g. pharmacy/FDA drug approvals, security CVEs, academic papers) by extracting topic selection and report prompts into configurable templates
 
 ## Configuration

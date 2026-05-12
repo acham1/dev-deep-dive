@@ -38,7 +38,7 @@ gcloud functions deploy api \
     --allow-unauthenticated \
     --timeout=60s \
     --memory=256Mi \
-    --set-env-vars="GCP_PROJECT=$PROJECT_ID" \
+    --set-env-vars="GCP_PROJECT=$PROJECT_ID,SITE_URL=${SITE_URL:-https://acham1.github.io/dev-deep-dive}" \
     --set-secrets="/etc/secrets/.env=$SECRET_NAME:latest" \
     --project="$PROJECT_ID"
 

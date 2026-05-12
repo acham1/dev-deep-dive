@@ -73,6 +73,23 @@ def list_reports(limit: int = 20, start_after: str | None = None) -> list[dict]:
     return results
 
 
+def get_latest_report() -> dict | None:
+    db = _db()
+    docs = list(
+        db.collection("reports")
+        .order_by("created_at", direction=firestore.Query.DESCENDING)
+        .limit(1)
+        .stream()
+    )
+    if not docs:
+        return None
+    d = docs[0].to_dict()
+    d["id"] = docs[0].id
+    if "created_at" in d and hasattr(d["created_at"], "isoformat"):
+        d["created_at"] = d["created_at"].isoformat()
+    return d
+
+
 def get_report(report_id: str) -> dict | None:
     doc = _db().collection("reports").document(report_id).get()
     if not doc.exists:

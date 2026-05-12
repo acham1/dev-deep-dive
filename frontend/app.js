@@ -194,7 +194,7 @@ async function loadLatest() {
   if (!latestPreview) return;
 
   try {
-    const res = await fetch(`${API_BASE}/reports?limit=1`);
+    const res = await fetch(`${API_BASE}/reports?limit=6`);
     const data = await res.json();
     const reports = data.reports || [];
 
@@ -204,19 +204,23 @@ async function loadLatest() {
       return;
     }
 
-    const r = reports[0];
-    const date = r.created_at
-      ? new Date(r.created_at).toLocaleDateString()
-      : "";
+    latestPreview.innerHTML = "";
+    for (const r of reports) {
+      const date = r.created_at
+        ? new Date(r.created_at).toLocaleDateString()
+        : "";
 
-    latestPreview.innerHTML = `
-      <a href="report.html?id=${r.id}" class="card">
+      const a = document.createElement("a");
+      a.href = `report.html?id=${r.id}`;
+      a.className = "card";
+      a.innerHTML = `
         <span class="category">${r.category || "misc"}</span>
         <h3>${r.title || r.project_name}</h3>
         <p class="tagline">${r.tagline || ""}</p>
         <span class="date">${date}</span>
-      </a>
-    `;
+      `;
+      latestPreview.appendChild(a);
+    }
   } catch {
     latestPreview.innerHTML = "";
   }

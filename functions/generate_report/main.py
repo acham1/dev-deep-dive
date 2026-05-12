@@ -28,8 +28,40 @@ logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
 
 
+def _send_error_alert(error: Exception):
+    admin_email = os.environ.get("ADMIN_EMAIL")
+    resend_key = os.environ.get("RESEND_API_KEY")
+    if not admin_email or not resend_key:
+        return
+
+    import resend
+
+    resend.api_key = resend_key
+    from_email = os.environ.get("FROM_EMAIL", "deepdive@mail.dev-deep-dive.alanch.am")
+    try:
+        resend.Emails.send(
+            {
+                "from": from_email,
+                "to": admin_email,
+                "subject": "Weekly Deep Dive: report generation failed",
+                "html": f"<pre>{error.__class__.__name__}: {error}</pre>",
+            }
+        )
+    except Exception:
+        logger.exception("Failed to send error alert")
+
+
 @functions_framework.cloud_event
 def generate_report(cloud_event: CloudEvent) -> None:
+    try:
+        _generate_report()
+    except Exception as e:
+        logger.exception("Report generation failed")
+        _send_error_alert(e)
+        raise
+
+
+def _generate_report():
     logger.info("Starting report generation")
 
     project = select_project()

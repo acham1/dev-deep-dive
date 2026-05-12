@@ -13,7 +13,16 @@ if _secrets_path.exists():
             key, _, value = line.partition("=")
             os.environ.setdefault(key.strip(), value.strip())
 
-from firestore_client import add_subscriber, get_report, list_reports, remove_subscriber
+from flask import Response
+
+from firestore_client import (
+    add_subscriber,
+    get_latest_report,
+    get_report,
+    list_reports,
+    remove_subscriber,
+)
+from welcome_email import send_welcome_email
 
 EMAIL_RE = re.compile(r"^[^@\s]+@[^@\s]+\.[^@\s]+$")
 
@@ -42,6 +51,8 @@ def api(request):
         return _handle_subscribe(request)
     elif path == "/unsubscribe" and method == "GET":
         return _handle_unsubscribe(request)
+    elif path == "/feed.xml" and method == "GET":
+        return _handle_feed()
     elif path == "/reports" and method == "GET":
         return _handle_list_reports(request)
     elif path.startswith("/reports/") and method == "GET":
@@ -61,6 +72,8 @@ def _handle_subscribe(request):
         return _respond({"error": "invalid email"}, 400)
 
     status = add_subscriber(email)
+    if status == "subscribed":
+        send_welcome_email(email)
     return _respond({"status": status})
 
 
@@ -79,6 +92,14 @@ def _handle_list_reports(request):
     start_after = request.args.get("start_after")
     reports = list_reports(limit=limit, start_after=start_after)
     return _respond({"reports": reports})
+
+
+def _handle_feed():
+    from feed import build_rss_xml
+
+    reports = list_reports(limit=50)
+    xml = build_rss_xml(reports)
+    return Response(xml, content_type="application/rss+xml; charset=utf-8", headers=_cors_headers())
 
 
 def _handle_get_report(report_id):
