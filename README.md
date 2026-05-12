@@ -58,7 +58,7 @@ gcloud pubsub topics publish deep-dive-trigger --message='{}'
 
 - [ ] **Podcast generation** — Use TTS to convert reports into audio episodes and publish to podcast directories (Apple Podcasts, Spotify, etc.)
 - [ ] **Site header logo** — Add the logo to the site header
-- [ ] **Latest Deep Dives** — Rename "Latest Deep Dive" to "Latest Deep Dives" on the home page
+- [ ] **Latest Deep Dives** — Show multiple recent reports on the home page instead of just the single latest one
 - [ ] **RSS feed** — Fix RSS feed (currently 404) — serve via API endpoint or generate as static file
 - [ ] **Error alerting** — Email an admin address when report generation fails
 - [ ] **Welcome email** — Send new subscribers a welcome email with the most recent report
