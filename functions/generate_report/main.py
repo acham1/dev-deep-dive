@@ -22,6 +22,7 @@ from firestore_client import (
     mark_project_covered,
     save_report,
 )
+from podcast_generator import generate_podcast_audio
 from project_selector import select_project
 
 logger = logging.getLogger(__name__)
@@ -73,6 +74,14 @@ def _generate_report():
     report_id = save_report(project, report)
     mark_project_covered(project)
     logger.info("Saved report %s", report_id)
+
+    try:
+        audio = generate_podcast_audio(report, report_id)
+        if audio:
+            report["audio_url"] = audio["audio_url"]
+            logger.info("Generated podcast audio: %s", audio["audio_url"])
+    except Exception:
+        logger.exception("Podcast audio generation failed (non-fatal)")
 
     subscribers = get_subscribers()
     if subscribers:

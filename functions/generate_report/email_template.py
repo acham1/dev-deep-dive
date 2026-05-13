@@ -70,9 +70,10 @@ def render_email(report: dict, report_id: str, unsub_token: str, site_url: str) 
 <div style="color:#333;font-size:15px;line-height:1.6;">{takeaways_html}</div>
 </td></tr>
 
-<!-- CTA Button -->
+<!-- CTA Buttons -->
 <tr><td align="center" style="padding:0 32px 32px;">
 <a href="{report_url}" style="display:inline-block;background:#1a1a2e;color:#ffffff;padding:12px 28px;text-decoration:none;border-radius:4px;font-size:15px;">Read on the web</a>
+{f'&nbsp;&nbsp;<a href="{report.get("audio_url")}" style="display:inline-block;background:#fff;color:#1a1a2e;padding:12px 28px;text-decoration:none;border-radius:4px;font-size:15px;border:1px solid #1a1a2e;">Listen to this episode</a>' if report.get("audio_url") else ""}
 </td></tr>
 
 <!-- Footer -->

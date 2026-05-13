@@ -53,6 +53,8 @@ def api(request):
         return _handle_unsubscribe(request)
     elif path == "/feed.xml" and method == "GET":
         return _handle_feed()
+    elif path == "/podcast.xml" and method == "GET":
+        return _handle_podcast_feed()
     elif path == "/reports" and method == "GET":
         return _handle_list_reports(request)
     elif path.startswith("/reports/") and method == "GET":
@@ -99,6 +101,14 @@ def _handle_feed():
 
     reports = list_reports(limit=50)
     xml = build_rss_xml(reports)
+    return Response(xml, content_type="application/rss+xml; charset=utf-8", headers=_cors_headers())
+
+
+def _handle_podcast_feed():
+    from podcast_feed import build_podcast_rss_xml
+
+    reports = list_reports(limit=50)
+    xml = build_podcast_rss_xml(reports)
     return Response(xml, content_type="application/rss+xml; charset=utf-8", headers=_cors_headers())
 
 

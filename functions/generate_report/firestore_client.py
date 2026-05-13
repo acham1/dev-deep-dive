@@ -73,6 +73,10 @@ def get_all_reports_for_feed() -> list[dict]:
     return results
 
 
+def update_report_audio(report_id: str, audio_data: dict):
+    _db().collection("reports").document(report_id).update(audio_data)
+
+
 def mark_email_sent(report_id: str):
     _db().collection("reports").document(report_id).update(
         {
