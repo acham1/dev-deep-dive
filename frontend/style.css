@@ -233,6 +233,17 @@ a {
   color: #666;
 }
 
+/* --- Audio Player --- */
+
+.audio-player {
+  margin-top: 16px;
+}
+
+.audio-player audio {
+  width: 100%;
+  max-width: 480px;
+}
+
 /* --- Tabs --- */
 
 .tabs {

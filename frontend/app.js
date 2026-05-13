@@ -134,6 +134,11 @@ async function loadReport() {
             ${date}
             ${r.repo_url ? ` · <a href="${r.repo_url}" target="_blank">GitHub</a>` : ""}
           </p>
+          ${r.audio_url ? `
+          <div class="audio-player">
+            <audio controls preload="none" src="${r.audio_url}"></audio>
+          </div>
+          ` : ""}
         </div>
       </div>
 
