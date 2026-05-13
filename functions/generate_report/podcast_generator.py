@@ -28,44 +28,41 @@ VOICES = [
 TTS_MODEL = "gemini-3.1-flash-tts-preview"
 
 
+def _split_paragraphs(text: str, transition: str = "") -> list[str]:
+    paragraphs = [p.strip() for p in text.split("\n\n") if p.strip()]
+    if not paragraphs:
+        return [transition] if transition else []
+    paragraphs[0] = f"{transition} {paragraphs[0]}" if transition else paragraphs[0]
+    return paragraphs
+
+
 def build_podcast_script(report: dict) -> list[str]:
     title = report.get("title", "Untitled")
     tagline = report.get("tagline", "")
 
-    sections = []
+    chunks = []
 
-    intro = f"Welcome to Weekly Deep Dive. This week: {title}. {tagline}"
-    sections.append(intro)
+    chunks.append(f"Welcome to Weekly Deep Dive. This week: {title}. {tagline}")
 
-    if report.get("why_it_matters"):
-        sections.append(f"Let's start with why this matters. {report['why_it_matters']}")
+    body_sections = [
+        ("why_it_matters", "Let's start with why this matters."),
+        ("beginner", "Starting at the beginner level."),
+        ("intermediate", "Moving to the intermediate level."),
+        ("advanced", "Now for the advanced level."),
+        ("key_takeaways", "Here are the key takeaways."),
+    ]
 
-    if report.get("beginner"):
-        sections.append(
-            f"Starting at the beginner level. {report['beginner']}"
-        )
+    for key, transition in body_sections:
+        text = report.get(key, "")
+        if text:
+            chunks.extend(_split_paragraphs(text, transition))
 
-    if report.get("intermediate"):
-        sections.append(
-            f"Moving to the intermediate level. {report['intermediate']}"
-        )
-
-    if report.get("advanced"):
-        sections.append(
-            f"Now for the advanced level. {report['advanced']}"
-        )
-
-    if report.get("key_takeaways"):
-        sections.append(
-            f"Here are the key takeaways. {report['key_takeaways']}"
-        )
-
-    sections.append(
+    chunks.append(
         f"That's this week's deep dive into {title}. "
         "Thanks for listening, and we'll see you next week."
     )
 
-    return sections
+    return chunks
 
 
 def _pcm_to_audio_segment(pcm_data: bytes) -> AudioSegment:
