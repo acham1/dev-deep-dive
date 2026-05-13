@@ -62,6 +62,7 @@ gcloud pubsub topics publish deep-dive-trigger --message='{}'
 - [x] **RSS feed** — Serve RSS feed via API endpoint (`/feed.xml`)
 - [x] **Error alerting** — Email `ADMIN_EMAIL` when report generation fails
 - [x] **Welcome email** — Send new subscribers a welcome email with the most recent report
+- [ ] **Parallelize TTS** — Synthesize podcast sections concurrently to reduce episode generation time
 - [ ] **Multi-domain support** — Make the platform reusable for other domains (e.g. pharmacy/FDA drug approvals, security CVEs, academic papers) by extracting topic selection and report prompts into configurable templates
 
 ## Configuration
