@@ -15,7 +15,6 @@ if _secrets_path.exists():
 
 from agent import run_agent
 from email_sender import send_report_email
-from feed_generator import regenerate_rss_feed
 from firestore_client import (
     get_subscribers,
     mark_email_sent,
@@ -94,6 +93,3 @@ def _generate_report():
         logger.info("Sent email to %d subscribers", len(subscribers))
     else:
         logger.info("No subscribers, skipping email")
-
-    regenerate_rss_feed()
-    logger.info("RSS feed regenerated")
