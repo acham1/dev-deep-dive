@@ -25,8 +25,8 @@ from firestore_client import (
 from podcast_generator import generate_podcast_audio
 from project_selector import select_project
 
+logging.basicConfig(level=logging.INFO, force=True)
 logger = logging.getLogger(__name__)
-logging.basicConfig(level=logging.INFO)
 
 
 def _send_error_alert(error: Exception):
@@ -80,7 +80,11 @@ def _generate_report():
         if audio:
             report["audio_url"] = audio["audio_url"]
             logger.info("Generated podcast audio: %s", audio["audio_url"])
-    except Exception:
+    except Exception as e:
+        import traceback
+
+        print(f"Podcast audio generation failed (non-fatal): {e}")
+        traceback.print_exc()
         logger.exception("Podcast audio generation failed (non-fatal)")
 
     subscribers = get_subscribers()
