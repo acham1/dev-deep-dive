@@ -89,6 +89,7 @@ def synthesize_audio(sections: list[str], report_id: str) -> dict:
     combined = AudioSegment.empty()
     pause = AudioSegment.silent(duration=1000)
     total_chars = 0
+    skipped = []
 
     for i, section in enumerate(sections):
         total_chars += len(section)
@@ -109,6 +110,10 @@ def synthesize_audio(sections: list[str], report_id: str) -> dict:
             ),
         )
 
+        if not response.candidates or not response.candidates[0].content.parts:
+            logger.warning("Empty TTS response for section %d, skipping", i + 1)
+            skipped.append({"index": i + 1, "chars": len(section), "preview": section[:100]})
+            continue
         pcm_data = response.candidates[0].content.parts[0].inline_data.data
         segment = _pcm_to_audio_segment(pcm_data)
 
@@ -140,7 +145,39 @@ def synthesize_audio(sections: list[str], report_id: str) -> dict:
         "size_bytes": size_bytes,
         "voice_name": voice_name,
         "model": TTS_MODEL,
+        "skipped_sections": skipped,
     }
+
+
+def _send_skipped_warning(report_id: str, title: str, skipped: list[dict]):
+    admin_email = os.environ.get("ADMIN_EMAIL")
+    resend_key = os.environ.get("RESEND_API_KEY")
+    if not admin_email or not resend_key:
+        return
+
+    import resend
+
+    resend.api_key = resend_key
+    from_email = os.environ.get("FROM_EMAIL", "deepdive@mail.dev-deep-dive.alanch.am")
+
+    items = "".join(
+        f"<li>Section {s['index']} ({s['chars']} chars): "
+        f"<code>{s['preview']}...</code></li>"
+        for s in skipped
+    )
+    try:
+        resend.Emails.send({
+            "from": from_email,
+            "to": admin_email,
+            "subject": f"Podcast warning: {len(skipped)} skipped section(s) in {title}",
+            "html": (
+                f"<p>Report <b>{title}</b> (<code>{report_id}</code>) had "
+                f"{len(skipped)} section(s) skipped due to empty TTS responses:</p>"
+                f"<ul>{items}</ul>"
+            ),
+        })
+    except Exception:
+        logger.exception("Failed to send skipped-section warning email")
 
 
 def generate_podcast_audio(report: dict, report_id: str) -> dict | None:
@@ -159,5 +196,9 @@ def generate_podcast_audio(report: dict, report_id: str) -> dict | None:
         "audio_model": result["model"],
         "audio_generated_at": datetime.now(timezone.utc),
     })
+
+    if result["skipped_sections"]:
+        title = report.get("title", "Untitled")
+        _send_skipped_warning(report_id, title, result["skipped_sections"])
 
     return result
